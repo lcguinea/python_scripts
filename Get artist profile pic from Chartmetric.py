@@ -2,7 +2,7 @@
 import requests
 
 # Replace with your actual refresh token
-REFRESH_TOKEN = 'lZlhKk3G6jmJLK2GsAfbGfYMwFNryqretb4ip7n9I22kH1c6trhtgGHNAZqzVJRT'
+REFRESH_TOKEN = 'YOUR_REFRESH_TOKEN'
 ARTIST_NAME = 'Taylor Swift'  # Replace with the actual artist name
 
 def get_access_token(refresh_token):
