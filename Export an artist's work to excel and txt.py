@@ -4,8 +4,8 @@ import base64
 import pandas as pd
 
 # Replace with your Spotify app credentials
-CLIENT_ID = '523845d27c624a12b04290f3089bfc68'
-CLIENT_SECRET = 'cc8c969c977d4a51a8dbe8204751f74b'
+CLIENT_ID = 'YOUR_CLIENT_ID'
+CLIENT_SECRET = 'YOUR_CLIENT_SECRET'
 
 def get_spotify_token():
     """Get Spotify API token."""
