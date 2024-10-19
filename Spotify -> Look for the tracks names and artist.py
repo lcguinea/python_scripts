@@ -7,8 +7,8 @@ import googleapiclient.errors
 
 # Spotify Authentication
 def spotify_authenticate():
-    client_id = 'd4706f4329eb482b97895ff639479528'
-    client_secret = '303a9cf3aa154194857bda5cd1a6ec7a'
+    client_id = 'YOUR_CLIENT_ID'
+    client_secret = 'YOUR_CLIENT_SECRET'
     credentials = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
     sp = spotipy.Spotify(client_credentials_manager=credentials)
     return sp
