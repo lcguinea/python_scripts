@@ -22,8 +22,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
 # Spotify credentials and playlist ID
-client_id = 'd4706f4329eb482b97895ff639479528'
-client_secret = '303a9cf3aa154194857bda5cd1a6ec7a'
+client_id = 'YOUR_CLIENT_ID'
+client_secret = 'YOUR_CLIENT_SECRET'
 redirect_uri = 'http://localhost:8888/callback'
 
 # Scopes required for reading a user's playlist
