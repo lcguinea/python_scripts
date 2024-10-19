@@ -7,7 +7,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, pipeline
 from docx import Document
 
 # Fetch the transcript and video title
-video_id = 'TeIvGktnaMY'  # Replace with your YouTube video ID
+video_id = '8_DBT0XFQMQ'  # Replace with your YouTube video ID
 video_url = f"https://www.youtube.com/watch?v={video_id}"
 
 # Get video title
@@ -15,7 +15,7 @@ yt = YouTube(video_url)
 video_title = yt.title
 
 try:
-    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['es'])
+    transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
 except NoTranscriptFound:
     print("No Spanish transcript found.")
     transcript = []
@@ -49,23 +49,43 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 # Initialize the summarization pipeline
 summarizer = pipeline("summarization", model=model, tokenizer=tokenizer, device=device)
 
+def split_text(text, max_length):
+    """Splits text into chunks of max_length."""
+    return [text[i:i+max_length] for i in range(0, len(text), max_length)]
+
 # Generate the summary for each chunk and concatenate the results
 summary_text = ""
 for chunk in chunks:
     summary = summarizer(chunk, max_length=150, min_length=50, do_sample=False)
     summary_text += summary[0]['summary_text'] + " "
 
-# Create a Word document and save the cleaned transcript and summary
-doc = Document()
-doc.add_heading(video_title, 0)
+# Split the concatenated summary text into smaller chunks
+max_model_length = 512  # Adjust based on the model's max input length
+summary_chunks = split_text(summary_text, max_model_length)
 
-doc.add_heading('Transcripción Limpia', level=1)
-doc.add_paragraph(cleaned_text)
+# Generate a summary for each smaller chunk
+final_summary_text = ""
+for chunk in summary_chunks:
+    final_summary = summarizer(chunk, max_length=150, min_length=50, do_sample=False)
+    final_summary_text += final_summary[0]['summary_text'] + " "
 
-doc.add_heading('Resumen', level=1)
-doc.add_paragraph(summary_text.strip())
+# Create a Word document and save the cleaned transcript
+transcript_doc = Document()
+transcript_doc.add_heading(video_title, 0)
+transcript_doc.add_heading('Transcripción Limpia', level=1)
+transcript_doc.add_paragraph(cleaned_text)
 
-output_file_path = f"{video_title}.docx"
-doc.save(output_file_path)
+transcript_output_file_path = f"{video_title}_transcript.docx"
+transcript_doc.save(transcript_output_file_path)
 
-print(f"Transcripción limpia y resumen guardados en {output_file_path}")
+# Create another Word document and save the summary
+summary_doc = Document()
+summary_doc.add_heading(video_title, 0)
+summary_doc.add_heading('Resumen', level=1)
+summary_doc.add_paragraph(final_summary_text.strip())
+
+summary_output_file_path = f"{video_title}_summary.docx"
+summary_doc.save(summary_output_file_path)
+
+print(f"Transcripción limpia guardada en {transcript_output_file_path}")
+print(f"Resumen guardado en {summary_output_file_path}")
