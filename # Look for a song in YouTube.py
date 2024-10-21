@@ -3,7 +3,7 @@
 from googleapiclient.discovery import build
 
 # Configura tu clave de API de YouTube
-youtube_api_key = 'AIzaSyDQyLR4s76KwpOYlKYJupo-ccuy8FMd9po'
+youtube_api_key = 'Your-API-KEY'
 
 # Función para buscar canciones en YouTube
 def search_youtube(query, api_key):
